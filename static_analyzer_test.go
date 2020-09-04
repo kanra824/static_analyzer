@@ -13,5 +13,6 @@ func TestAnalyzer(t *testing.T) {
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "Ident")
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "BasicLit")
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "BinaryExpr")
+	analysistest.Run(t, testdata, static_analyzer.Analyzer, "CallExpr")
 }
 

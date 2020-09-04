@@ -1,12 +1,8 @@
 package CallExpr
 
-import (
-	"fmt"
-)
-
 func f() {
-	var i, j int
-	fmt.Println(g(i, j))
+	var i int
+	i = g(i, 0) // want "variable is not initialized"
 }
 
 func g(a int, b int) int {
