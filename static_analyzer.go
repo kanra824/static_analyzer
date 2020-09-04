@@ -70,6 +70,8 @@ func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
 		for _, ch := range node.Results {
 			checkExpr(pass, ch, variables)
 		}
+	case *ast.IncDecStmt:
+		checkExpr(pass, node.X, variables)
 	}
 }
 

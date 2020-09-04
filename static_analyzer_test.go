@@ -18,5 +18,6 @@ func TestAnalyzer(t *testing.T) {
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "IfStmt")
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "ForStmt")
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "ReturnStmt")
+	analysistest.Run(t, testdata, static_analyzer.Analyzer, "IncDecStmt")
 }
 
