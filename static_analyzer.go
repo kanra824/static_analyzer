@@ -89,6 +89,9 @@ func checkExpr(pass *analysis.Pass, node ast.Expr, variables map[string]bool) {
 		if _, ok := variables[node.Name]; ok && variables[node.Name] {
 			pass.Reportf(node.Pos(), "variable is not initialized")
 		}
+	case *ast.BinaryExpr:
+		checkExpr(pass, node.X, variables)
+		checkExpr(pass, node.Y, variables)
 	case *ast.BasicLit:
 	default:
 		pass.Reportf(node.Pos(), "not yet implemented")
