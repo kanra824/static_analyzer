@@ -47,6 +47,12 @@ func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
 		checkDeclStmt(node.Decl, variables)
 	case *ast.AssignStmt:
 		checkAssignStmt(pass, node, variables)
+	case *ast.IfStmt:
+		if node.Init != nil {
+			checkStmt(pass, node.Init, variables)
+		}
+		checkExpr(pass, node.Cond, variables)
+		checkStmt(pass, node.Body, variables)
 	}
 }
 

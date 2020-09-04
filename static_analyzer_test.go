@@ -15,5 +15,6 @@ func TestAnalyzer(t *testing.T) {
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "BinaryExpr")
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "CallExpr")
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "ParenExpr")
+	analysistest.Run(t, testdata, static_analyzer.Analyzer, "IfStmt")
 }
 
