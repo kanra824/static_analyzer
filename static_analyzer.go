@@ -97,6 +97,8 @@ func checkExpr(pass *analysis.Pass, node ast.Expr, variables map[string]bool) {
 			checkExpr(pass, arg, variables)
 		}
 	case *ast.BasicLit:
+	case *ast.ParenExpr:
+		checkExpr(pass, node.X, variables)
 	default:
 		pass.Reportf(node.Pos(), "not yet implemented")
 	}
