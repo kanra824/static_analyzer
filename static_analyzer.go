@@ -33,23 +33,27 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	return nil, nil
 }
 
+func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
+	switch node := node.(type) {
+	case *ast.BlockStmt:
+		newVariables := make(map[string]bool)
+		for k, v := range variables {
+			if v {
+				newVariables[k] = v
+			}
+		}
+		checkBlockStmt(pass, node, newVariables)
+	case *ast.DeclStmt:
+		checkDeclStmt(node.Decl, variables)
+	case *ast.AssignStmt:
+		checkAssignStmt(pass, node, variables)
+	}
+}
+
 // ブロックごとに、文を順番にチェック
 func checkBlockStmt(pass *analysis.Pass, block *ast.BlockStmt, variables map[string]bool) {
 	for _, node := range block.List {
-		switch node := node.(type) {
-		case *ast.BlockStmt:
-			newVariables := make(map[string]bool)
-			for k, v := range variables {
-				if v {
-					newVariables[k] = v
-				}
-			}
-			checkBlockStmt(pass, node, newVariables)
-		case *ast.DeclStmt:
-			checkDeclStmt(node.Decl, variables)
-		case *ast.AssignStmt:
-			checkAssignStmt(pass, node, variables)
-		}
+		checkStmt(pass, node, variables)
 	}
 }
 
@@ -70,7 +74,7 @@ func checkAssignStmt(pass *analysis.Pass, node *ast.AssignStmt, variables map[st
 	for _, expr := range node.Rhs {
 		checkExpr(pass, expr, variables)
 	}
-	// とりあえず左辺値が単なる変数の時を考える
+	// とりあえず左辺値が単なる変数の時を考える(a[0] = 1などが未対応)
 	for _, lhs := range node.Lhs {
 		switch lhs := lhs.(type) {
 		case *ast.Ident:
