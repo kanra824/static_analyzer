@@ -20,5 +20,6 @@ func TestAnalyzer(t *testing.T) {
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "ReturnStmt")
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "IncDecStmt")
 	analysistest.Run(t, testdata, static_analyzer.Analyzer, "SwitchStmt")
+	analysistest.Run(t, testdata, static_analyzer.Analyzer, "SelectorExpr")
 }
 

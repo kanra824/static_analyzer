@@ -87,6 +87,8 @@ func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
 		for _, stmt := range node.Body {
 			checkStmt(pass, stmt, variables)
 		}
+	case *ast.ExprStmt:
+		checkExpr(pass, node.X, variables)
 	default:
 		pass.Reportf(node.Pos(), "not yet implemented")
 	}
@@ -144,6 +146,9 @@ func checkExpr(pass *analysis.Pass, node ast.Expr, variables map[string]bool) {
 		}
 	case *ast.BasicLit:
 	case *ast.ParenExpr:
+		checkExpr(pass, node.X, variables)
+	case *ast.SelectorExpr:
+		// TODO: node.Selがゼロ値かどうかを調べる
 		checkExpr(pass, node.X, variables)
 	default:
 		pass.Reportf(node.Pos(), "not yet implemented")
