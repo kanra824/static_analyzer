@@ -72,6 +72,21 @@ func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
 		}
 	case *ast.IncDecStmt:
 		checkExpr(pass, node.X, variables)
+	case *ast.SwitchStmt:
+		if node.Init != nil {
+			checkStmt(pass, node.Init, variables)
+		}
+		if node.Tag != nil {
+			checkExpr(pass, node.Tag, variables)
+		}
+		checkStmt(pass, node.Body, variables)
+	case *ast.CaseClause:
+		for _, exp := range node.List {
+			checkExpr(pass, exp, variables)
+		}
+		for _, stmt := range node.Body {
+			checkStmt(pass, stmt, variables)
+		}
 	}
 }
 
