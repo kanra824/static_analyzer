@@ -92,6 +92,10 @@ func checkExpr(pass *analysis.Pass, node ast.Expr, variables map[string]bool) {
 	case *ast.BinaryExpr:
 		checkExpr(pass, node.X, variables)
 		checkExpr(pass, node.Y, variables)
+	case *ast.CallExpr:
+		for _, arg := range node.Args {
+			checkExpr(pass, arg, variables)
+		}
 	case *ast.BasicLit:
 	default:
 		pass.Reportf(node.Pos(), "not yet implemented")

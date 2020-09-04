@@ -1,4 +1,4 @@
-package c
+package BinaryExpr
 
 func f() {
 	var i int

@@ -1,4 +1,4 @@
-package b
+package BasicLit
 
 func f() {
 	var i int

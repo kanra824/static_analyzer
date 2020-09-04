@@ -1,4 +1,4 @@
-package a
+package Ident
 
 func f() {
 	var i int
