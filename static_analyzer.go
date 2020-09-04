@@ -87,6 +87,8 @@ func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
 		for _, stmt := range node.Body {
 			checkStmt(pass, stmt, variables)
 		}
+	default:
+		pass.Reportf(node.Pos(), "not yet implemented")
 	}
 }
 
