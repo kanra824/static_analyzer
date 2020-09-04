@@ -26,7 +26,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		case *ast.FuncDecl:
 			variables := make(map[string]bool)
 			block := decl.Body
-			check(pass, block, variables)
+			checkBlockStmt(pass, block, variables)
 		}
 	}
 
@@ -34,7 +34,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 }
 
 // ブロックごとに、文を順番にチェック
-func check(pass *analysis.Pass, block *ast.BlockStmt, variables map[string]bool) {
+func checkBlockStmt(pass *analysis.Pass, block *ast.BlockStmt, variables map[string]bool) {
 	for _, node := range block.List {
 		switch node := node.(type) {
 		case *ast.BlockStmt:
@@ -44,7 +44,7 @@ func check(pass *analysis.Pass, block *ast.BlockStmt, variables map[string]bool)
 					newVariables[k] = v
 				}
 			}
-			check(pass, node, newVariables)
+			checkBlockStmt(pass, node, newVariables)
 		case *ast.DeclStmt:
 			checkDeclStmt(node.Decl, variables)
 		case *ast.AssignStmt:
@@ -89,6 +89,7 @@ func checkExpr(pass *analysis.Pass, node ast.Expr, variables map[string]bool) {
 		if _, ok := variables[node.Name]; ok && variables[node.Name] {
 			pass.Reportf(node.Pos(), "variable is not initialized")
 		}
+	case *ast.BasicLit:
 	default:
 		pass.Reportf(node.Pos(), "not yet implemented")
 	}
