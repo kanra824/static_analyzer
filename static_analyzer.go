@@ -33,6 +33,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	return nil, nil
 }
 
+
 func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
 	switch node := node.(type) {
 	case *ast.BlockStmt:
@@ -43,6 +44,7 @@ func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
 			}
 		}
 		checkBlockStmt(pass, node, newVariables)
+		// TODO: ブロックの外側で定義された変数にブロックの中で代入している場合を検出
 	case *ast.DeclStmt:
 		checkDeclStmt(node.Decl, variables)
 	case *ast.AssignStmt:
@@ -52,6 +54,17 @@ func checkStmt(pass *analysis.Pass, node ast.Stmt, variables map[string]bool) {
 			checkStmt(pass, node.Init, variables)
 		}
 		checkExpr(pass, node.Cond, variables)
+		checkStmt(pass, node.Body, variables)
+	case *ast.ForStmt:
+		if node.Init != nil {
+			checkStmt(pass, node.Init, variables)
+		}
+		if node.Cond != nil {
+			checkExpr(pass, node.Cond, variables)
+		}
+		if node.Post != nil {
+			checkStmt(pass, node.Post, variables)
+		}
 		checkStmt(pass, node.Body, variables)
 	}
 }
