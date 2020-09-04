@@ -1,10 +1,7 @@
 package a
 
 func f() {
-	var i, j, k int
-	i += 1
-	j += 1
-	k += 1
-
+	var i int
+	i = i // want "variable is not initialized"
 }
 
